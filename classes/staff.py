@@ -1,22 +1,17 @@
-import csv
-import os.path
 from classes.person import Person
+import csv
 
 class Staff(Person):
-
+    staff_list = []
     def __init__(self, name, age, password, role, employee_id):
         super().__init__(name, age, password, role)
         self.employee_id = employee_id
-
-    @classmethod
-    def objects(cls):
-        staff = []
-        my_path = os.path.abspath(os.path.dirname(__file__))
-        path = os.path.join(my_path, "../data/staff.csv")
-
-        with open(path) as csvfile:
-            reader = csv.DictReader(csvfile)
-            for row in reader:
-                staff.append(Staff(**dict(row)))
-
-        return staff
+    
+    @classmethod        
+    def all_staff(self):
+        with open("./data/staff.csv") as file:
+            staff = csv.reader(file)
+            for row in staff:
+                if row[0] != "name":
+                    Staff.staff_list.append(row)
+        return Staff.staff_list
